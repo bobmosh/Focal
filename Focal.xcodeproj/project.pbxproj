@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C02C13401EC480C9007BB373 /* FileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02C133F1EC480C9007BB373 /* FileHandler.swift */; };
 		C0941F261EC4542000C424AF /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0941F251EC4542000C424AF /* main.swift */; };
 		C0941F2D1EC4553800C424AF /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = C0941F2C1EC4553800C424AF /* README.md */; };
 /* End PBXBuildFile section */
@@ -24,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C02C133F1EC480C9007BB373 /* FileHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileHandler.swift; sourceTree = "<group>"; };
 		C0941F221EC4542000C424AF /* Focal */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Focal; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0941F251EC4542000C424AF /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		C0941F2C1EC4553800C424AF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				C0941F251EC4542000C424AF /* main.swift */,
+				C02C133F1EC480C9007BB373 /* FileHandler.swift */,
 			);
 			path = Focal;
 			sourceTree = "<group>";
@@ -124,6 +127,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C02C13401EC480C9007BB373 /* FileHandler.swift in Sources */,
 				C0941F2D1EC4553800C424AF /* README.md in Sources */,
 				C0941F261EC4542000C424AF /* main.swift in Sources */,
 			);
@@ -259,6 +263,7 @@
 				C0941F2B1EC4542000C424AF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
