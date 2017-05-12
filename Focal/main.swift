@@ -7,5 +7,7 @@
 //
 
 import Foundation
+import Darwin
 
-var fileHandler = FileHandler()
+// Start the application.
+var consoleHandler = ConsoleHandler()
