@@ -10,12 +10,15 @@ import Foundation
 
 class FocalHandler {
     var firstTime = false
-    var blockedWebsites = ["www.facebook.com"]
+    var blockedWebsites: [String] = []
+    var listName = "blacklist"
+    var textifiedName: (String)->String  = { arg in return arg + ".txt" }
     
     // Setting the default variables necessary for the software to work.
     // (Backup directory and file, location of hosts file)
-    let defaultBackupFilePath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)[0] + "/Focal/backup"
-    let defaultBackupFileName = "/initialBackup.txt"
+    let defaultBackupFilePath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)[0] + "/Focal/backup/"
+    let defaultBackupFileName = "initialBackup.txt"
+    let defaultProfilePath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)[0] + "/Focal/profiles/"
     let hostsFilePath = "/etc"
     let hostsFileFilename = "/hosts"
     
@@ -28,6 +31,45 @@ class FocalHandler {
         }
         
         // TODO: Import list
+        guard let blockedWebsites = importList(listName: listName) else {
+            return
+        }
+        self.blockedWebsites = cleanupList(array: blockedWebsites)
+    }
+    
+    
+    /// Exports the currently loaded blacklist to the drive.
+    ///
+    /// - Parameter named: Name of the file that should be saved.
+    /// - Returns: Returns wether the export was sucessful or not.
+    func exportList(named: String) -> Bool {
+        var content = ""
+        for item in blockedWebsites {
+            content += item + "\n"
+        }
+        if FileHandler.exportFile(filepath: defaultProfilePath, filename: textifiedName(listName), content: content) {
+            return true
+        } else { return false }
+    }
+    
+    
+    /// Imports the passed file as a list of websites that needs to be added to the hosts file. Returns array of lines separated by "\n" if the file exists and nil if file doesn't exist.
+    ///
+    /// - Parameter listName: The name of the List. ( which is listName + ".txt" as filename)
+    /// - Returns: Array of lines in the text file (separated by "\n".
+    func importList(listName: String) -> [String]? {
+        let input = FileHandler.importFile(filepath: defaultProfilePath, filename: textifiedName(listName))
+        let websites = input?.components(separatedBy: "\n")
+        return websites
+    }
+    
+    
+    /// Removes empty lines from an array. Used to minimize memory allocation and cleans up the lists file as a result.
+    ///
+    /// - Parameter array: Array that should be cleaned up.
+    /// - Returns: Returns the cleaned array.
+    func cleanupList(array: [String]) -> [String] {
+        return array.filter{$0 != ""}
     }
     
     
@@ -68,5 +110,18 @@ class FocalHandler {
     func addWebsite(website: String) {
         // TODO: Check for valid URLs
         blockedWebsites.append(website)
+    }
+    
+    
+    /// Deletes a website from the array of the currently buffered list of websites.
+    ///
+    /// - Parameter website: Value that should be deleted.
+    /// - Returns: Returns wether the deletion was successful or not.
+    func removeWebsite(website: String) -> Bool {
+        guard let index = blockedWebsites.index(of: website) else {
+            return false
+        }
+        blockedWebsites.remove(at: index)
+        return true
     }
 }
