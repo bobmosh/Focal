@@ -1,13 +1,18 @@
 # Focal.
 Eliminate social distractions on a task to task basis.
 
----- 
+
+
+
 ## What’s Focal?
 Focal is a tool that can help you get focused on your day to day tasks.
 
 > The goal is to be able to block websites on a scheduled basis, to eliminate social distractions that keep me and many other people from getting work done.
 
 Focal should be an app like [SelfControl](https://selfcontrolapp.com) but with much more flexibility and versatility. Focal is my attempt to getting rid of the constant urge to check social networks, but still allow the occasional check (but only at certain times). Focal is my approach to teaching myself discipline with scheduled and therefor mindful usage of social networks.
+
+
+
 
 ## Scratching my own itch.
 This project is a personal endeavour on tackling the constant distractions caused by Facebook, Twitter, Instagram etc. I can’t stand the fact that my focus is prone to those distractions but it’s a fact I can’t deny. And since I’m a maker, I had to do something about it.
