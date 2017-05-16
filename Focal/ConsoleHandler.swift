@@ -50,6 +50,8 @@ class ConsoleHandler {
     /// Creates a dictionary with all the known commands and returns it.
     func initCommands() -> [String: () -> Void] {
         var commands = [String: () -> Void]()
+        commands["block"] = blockWebsites
+        
         commands["exit"] = exitApplication
         commands["kill"] = exitApplication
         
@@ -81,8 +83,21 @@ class ConsoleHandler {
     }
     
     
+    /// Calls the FoclaHanlder to block the currently buffered websites.
+    func blockWebsites() {
+        focalHandler.blockWebsites()
+    }
+    
+    
     /// Kill sthe application with error code 0.
     func exitApplication() {
+        print()
+        print("Do you want to save changes you made to the blacklist?\n n: No\n y: Yes")
+        
+        if readLine() == "y" {
+            saveBlacklist()
+        }
+        
         print("Exiting...")
         exit(0)
     }

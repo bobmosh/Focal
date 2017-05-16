@@ -33,6 +33,7 @@
 		C0941F2C1EC4553800C424AF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C0A47B281EC58CBF008A1114 /* FocalHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocalHandler.swift; sourceTree = "<group>"; };
 		C0A47B2A1EC59705008A1114 /* ConsoleHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsoleHandler.swift; sourceTree = "<group>"; };
+		C0FC944D1ECB38D9002CB6CA /* Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Defaults.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +71,7 @@
 				C02C133F1EC480C9007BB373 /* FileHandler.swift */,
 				C0A47B281EC58CBF008A1114 /* FocalHandler.swift */,
 				C0A47B2A1EC59705008A1114 /* ConsoleHandler.swift */,
+				C0FC944D1ECB38D9002CB6CA /* Defaults.plist */,
 			);
 			path = Focal;
 			sourceTree = "<group>";
@@ -237,8 +239,10 @@
 		C0941F2A1EC4542000C424AF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				DEVELOPMENT_TEAM = 66J4WZNF29;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -246,8 +250,10 @@
 		C0941F2B1EC4542000C424AF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				DEVELOPMENT_TEAM = 66J4WZNF29;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

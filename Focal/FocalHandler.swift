@@ -6,35 +6,113 @@
 //  Copyright © 2017 Ferdinand Göldner. All rights reserved.
 //
 
+import Cocoa
 import Foundation
+
+import SecurityFoundation
+import ServiceManagement
+
 
 class FocalHandler {
     var firstTime = false
     var blockedWebsites: [String] = []
     var listName = "blacklist"
+    let redirectTo = ["0.0.0.0", "::"]
+    
+    /// Closure textifying a name. Generates a string that contains the name entered + ".txt".
     var textifiedName: (String)->String  = { arg in return arg + ".txt" }
     
     // Setting the default variables necessary for the software to work.
     // (Backup directory and file, location of hosts file)
     let defaultBackupFilePath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)[0] + "/Focal/backup/"
-    let defaultBackupFileName = "initialBackup.txt"
+    let defaultBackupFileName = "initialBackup"
     let defaultProfilePath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)[0] + "/Focal/profiles/"
-    let hostsFilePath = "/etc"
-    let hostsFileFilename = "/hosts"
+    let hostsFilePath = "/etc/"
+    let hostsFileFilename = "hosts"
     
     
-    /// Does an inital Backup if the app is launched the first time. After that it imports the list of websites that should be blocked.
+    /// Does an inital Backup if the app is launched the first time using NSUserDefaults. After that it imports the list of websites that should be blocked.
     init() {
-        // Implement using NSUserDefaults
-        if firstTime {
+        // Implement using a plist that is stored inside of the project bundle to make it easier to maintain in the future.
+        var dict = [String: Any]()
+        dict["firstTimeLaunch"] = true
+        let defaults = UserDefaults()
+        defaults.register(defaults: dict)
+        
+        if defaults.bool(forKey: "firstTimeLaunch") {
             _ = doInitialBackup()
+            
+            defaults.set(false, forKey: "firstTimeLaunch")
+            defaults.synchronize()
         }
         
-        // TODO: Import list
         guard let blockedWebsites = importList(listName: listName) else {
             return
         }
         self.blockedWebsites = cleanupList(array: blockedWebsites)
+    }
+    
+    
+    /// Generates a string from the default Backup of the hosts file + the items in the blockedWebsites array using the redirectTo array as parameters. Thoe entries are wrpaed in a block of comments that indicate that the are part of the focal app.  Number of entries cenerated: blockedWebsites.count * retirectTo.count
+    ///
+    /// - Returns: Generated string containing the backup of the hosts file + generated entrys wraped in a comment.
+    func generateHostsFile() -> String {
+        guard var blockedString: String = FileHandler.importFile(filepath: defaultBackupFilePath, filename: textifiedName(defaultBackupFileName)) else {
+            debugPrint("Couldn't read hosts Backup file.")
+            return ""
+        }
+        blockedString += "\n\n# Focal block starts here\n"
+        for item in blockedWebsites {
+            for redirection in redirectTo {
+                blockedString += "\(redirection) \(item)\n"
+            }
+        }
+        blockedString += "# Focal block ends here"
+        return blockedString
+    }
+    
+    
+    /// Creates an authentication process. If successfull, fileHandler exports the hosts file to the destination, and afterwardsfrees the auhentication reference. If authorization fails, it prints an error message.
+    func blockWebsites() {
+        guard let authRef: AuthorizationRef = authorize() else {
+            print("Couldn't block the websites. No access to the hosts file granted.")
+            return
+        }
+        
+        _ = FileHandler().exportFile(filepath: "/etc/", filename: "hosts", content: generateHostsFile())
+        
+        freeAuthorization(authRef: authRef)
+    }
+    
+    
+    /// Creates an authorization by using AuthorizationCreate.
+    ///
+    /// - Returns: Returns the authorization reference.
+    func authorize() -> AuthorizationRef? {
+        var myItems = [
+            AuthorizationItem(name: kAuthorizationRuleAuthenticateAsAdmin,
+                              valueLength: 0, value: nil, flags: 0)]
+        
+        var myRights = AuthorizationRights(count: UInt32(myItems.count), items: &myItems)
+        let myFlags : AuthorizationFlags = [[], .interactionAllowed, .extendRights]
+        
+        var authRef: AuthorizationRef?
+        let osStatus = AuthorizationCreate(&myRights, nil, myFlags, &authRef)
+        
+        if (osStatus == errAuthorizationSuccess) {
+            return authRef
+        } else {
+            debugPrint("Failed to Authorize.")
+            return authRef
+        }
+    }
+    
+    
+    /// Freea an aothorization based on its reference.
+    ///
+    /// - Parameter authRef: Authorization reference that shoul be freed.
+    func freeAuthorization(authRef: AuthorizationRef?) {
+        AuthorizationFree(authRef!, AuthorizationFlags(rawValue: 0))
     }
     
     
@@ -81,7 +159,7 @@ class FocalHandler {
             debugPrint("File \(hostsFilePath + hostsFileFilename) doesn't exist or couldn't be opened.")
             return false
         }
-        let success = FileHandler.exportFile(filepath: defaultBackupFilePath, filename: defaultBackupFileName, content: content)
+        let success = FileHandler.exportFile(filepath: defaultBackupFilePath, filename: textifiedName(defaultBackupFileName), content: content)
         return success
     }
     
@@ -91,8 +169,16 @@ class FocalHandler {
     ///
     /// - Returns: Returns wether the backup was sucessful or not.
     func restoreBackup() -> Bool {
-        let backup = FileHandler.importFile(filepath: defaultBackupFilePath, filename: defaultBackupFileName)
-        return FileHandler.exportFile(filepath: hostsFilePath, filename: hostsFileFilename, content: backup!)
+        guard let authRef: AuthorizationRef = authorize() else {
+            debugPrint("Couldn't block the websites. No access to the hosts file granted.")
+            return false
+        }
+        
+        let backup = FileHandler.importFile(filepath: defaultBackupFilePath, filename: textifiedName(defaultBackupFileName))
+        let successfulExport = FileHandler.exportFile(filepath: hostsFilePath, filename: hostsFileFilename, content: backup!)
+        
+        freeAuthorization(authRef: authRef)
+        return successfulExport
     }
     
     
