@@ -8,10 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		C02C13401EC480C9007BB373 /* FileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02C133F1EC480C9007BB373 /* FileHandler.swift */; };
+		C074884C1ECC7BDA00D2C78F /* FocalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A47B281EC58CBF008A1114 /* FocalHandler.swift */; };
 		C0941F261EC4542000C424AF /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0941F251EC4542000C424AF /* main.swift */; };
 		C0941F2D1EC4553800C424AF /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = C0941F2C1EC4553800C424AF /* README.md */; };
-		C0A47B291EC58CBF008A1114 /* FocalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A47B281EC58CBF008A1114 /* FocalHandler.swift */; };
 		C0A47B2B1EC59705008A1114 /* ConsoleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A47B2A1EC59705008A1114 /* ConsoleHandler.swift */; };
+		C0AA6C481ECD8AEF002F2B16 /* FocalCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AA6C471ECD8AEF002F2B16 /* FocalCommand.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,6 +34,7 @@
 		C0941F2C1EC4553800C424AF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C0A47B281EC58CBF008A1114 /* FocalHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocalHandler.swift; sourceTree = "<group>"; };
 		C0A47B2A1EC59705008A1114 /* ConsoleHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsoleHandler.swift; sourceTree = "<group>"; };
+		C0AA6C471ECD8AEF002F2B16 /* FocalCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocalCommand.swift; sourceTree = "<group>"; };
 		C0FC944D1ECB38D9002CB6CA /* Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Defaults.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,6 +73,7 @@
 				C02C133F1EC480C9007BB373 /* FileHandler.swift */,
 				C0A47B281EC58CBF008A1114 /* FocalHandler.swift */,
 				C0A47B2A1EC59705008A1114 /* ConsoleHandler.swift */,
+				C0AA6C471ECD8AEF002F2B16 /* FocalCommand.swift */,
 				C0FC944D1ECB38D9002CB6CA /* Defaults.plist */,
 			);
 			path = Focal;
@@ -86,6 +89,7 @@
 				C0941F1E1EC4542000C424AF /* Sources */,
 				C0941F1F1EC4542000C424AF /* Frameworks */,
 				C0941F201EC4542000C424AF /* CopyFiles */,
+				C0F5B9F81ECC9A610065B168 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -130,16 +134,33 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		C0F5B9F81ECC9A610065B168 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "TAGS=\"TODO:|FIXME:\"\n\nERRORTAG=\"ERROR:\"\n\nfind \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" -or -name \"*.swift\" -type f \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$|($ERRORTAG).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\" | perl -p -e \"s/($ERRORTAG)/ error: \\$1/\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C0941F1E1EC4542000C424AF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0A47B291EC58CBF008A1114 /* FocalHandler.swift in Sources */,
 				C02C13401EC480C9007BB373 /* FileHandler.swift in Sources */,
 				C0941F2D1EC4553800C424AF /* README.md in Sources */,
+				C074884C1ECC7BDA00D2C78F /* FocalHandler.swift in Sources */,
 				C0A47B2B1EC59705008A1114 /* ConsoleHandler.swift in Sources */,
 				C0941F261EC4542000C424AF /* main.swift in Sources */,
+				C0AA6C481ECD8AEF002F2B16 /* FocalCommand.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

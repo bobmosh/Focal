@@ -25,7 +25,7 @@ class FileHandler {
     }
     
     
-    /// **Static** - Exports the content passed to the function into a file at the give filepath and filename. Function creates folders and files if necessary and possible.
+    /// Exports the content passed to the function into a file at the give filepath and filename. Function creates folders and files if necessary and possible.
     ///
     /// - Parameters:
     ///   - filepath: The folder that the file should be saved in.
@@ -51,33 +51,4 @@ class FileHandler {
             return false
         }
     }
-    
-    /// **Non-Static** - Exports the content passed to the function into a file at the give filepath and filename. Function creates folders and files if necessary and possible.
-    ///
-    /// - Parameters:
-    ///   - filepath: The folder that the file should be saved in.
-    ///   - filename: The filename of the file that the content should be saved in.
-    ///   - content: The content string that should be saved to the file.
-    /// - Returns: Returns a flag wether the export was sucessfull or not. False: failed, True: succeeded.
-    func exportFile(filepath: String, filename: String, content: String) -> Bool {
-        do {
-            let fileManager = FileManager()
-            if (!fileManager.fileExists(atPath: (filepath + filename))) {
-                debugPrint("Path or file doesn't exist. Trying to create it now.")
-                do {
-                    try fileManager.createDirectory(atPath: (filepath), withIntermediateDirectories: true, attributes: nil)
-                } catch {
-                    debugPrint(error.localizedDescription)
-                }
-            }
-            
-            try content.write(toFile: (filepath + filename), atomically: false, encoding: .utf8)
-            return true
-        } catch {
-            debugPrint(error.localizedDescription)
-            return false
-        }
-    }
-    
-    
 }
