@@ -140,6 +140,8 @@ class ConsoleHandler {
     /// Calls the FoclaHanlder to block the currently buffered websites.
     func blockWebsites() {
         focalHandler.blockWebsites()
+        print("The websites on your blacklist are now being blocked.")
+        print()
     }
     
     /// Calls the FoclaHanlder to unblock the currently buffered websites.
