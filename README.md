@@ -2,6 +2,17 @@
 Eliminate social distractions on a task to task basis.
 
 
+## Stable V1
+The Stable Version 1 is my attempt to a minimum viable product that gets the job done. No fancy UI, no fancy tools it jsut works for now. Right now, the user needs to give himself teh permission to edit the hosts file via the macOS, that will be fixed in the future.
+
+What Focal can do at this point:
+* Manage a single blacklist (add, remove)
+* Create an initial backup of your hosts file so it doesn't get lost
+* Block and unblock websites by command (no schedule yet)
+
+**If you choose to try focal at this point, I do not gurantee that it works 100%
+If it destroys your hosts file, just contact me, I'll help you get it back on track.
+No serious damage can be done.**
 
 
 ## What’s Focal?
